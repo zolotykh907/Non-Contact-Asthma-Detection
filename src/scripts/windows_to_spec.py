@@ -9,8 +9,7 @@ import sys
 sys.path.append(os.path.abspath("..")) 
 sys.path.append("/var/data/vggish/")
 
-import vggish_input, vggish_params, vggish_slim
-from vggish_slim import define_vggish_slim, load_vggish_slim_checkpoint
+import vggish_input, vggish_slim
 
 checkpoint_path = "/var/data/src/vggish/vggish_model.ckpt"  
 pca_params_path = "/var/data/src/vggish/vggish_pca_params.npz"
