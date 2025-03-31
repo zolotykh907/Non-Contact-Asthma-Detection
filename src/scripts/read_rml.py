@@ -4,11 +4,11 @@ from typing import List, Dict
 
 def get_attributes(
     file_path: str,
+    types: List[str],
     space: str = 'ScoringData',
     namespace: str = 'http://www.respironics.com/PatientStudy.xsd',
     tag: str = "Events",
     family: str = 'Respiratory',
-    types: List[str] = ['ObstructiveApnea', 'CentralApnea', 'MixedApnea', 'Hypopnea']
 ) -> List[Dict[str, str]]:
     """
     Извлекает атрибуты событий из XML-файла, соответствующих заданным критериям.
@@ -17,6 +17,8 @@ def get_attributes(
     -----------
     file_path : str
         Путь к XML-файлу.
+    types : list
+        Список типов событий, которые нужно извлечь.
     space : str, optional
         Пространство в XML, где нужно искать атрибуты. По умолчанию 'ScoringData'.
     namespace : str, optional
@@ -25,8 +27,6 @@ def get_attributes(
         Тег, в котором находятся события. По умолчанию "Events".
     family : str, optional
         Семейство событий, которые нужно искать. По умолчанию 'Respiratory'.
-    types : list, optional
-        Список типов событий, которые нужно извлечь. По умолчанию ['ObstructiveApnea', 'CentralApnea', 'MixedApnea'].
 
     Возвращает:
     -----------

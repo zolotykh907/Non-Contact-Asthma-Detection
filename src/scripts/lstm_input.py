@@ -1,8 +1,3 @@
-import mne
-import os
-import time
-import warnings
-import librosa
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -29,14 +24,32 @@ res.shape = (17, 12288)
 
 
 def load_and_split_audio(wav, sr=16000):
-    #audio, _ = librosa.load(audio_path, sr=sr)
-    
+    """
+    Загружает аудиоданные и разбивает их на окна фиксированного размера.
+
+    Аргументы:
+        wav (numpy.ndarray): Аудиоданные.
+        sr (int): Частота дискретизации аудиоданных. По умолчанию 16000.
+
+    Возвращает:
+        list: Список окон аудиоданных.
+    """
     if len(wav) == 5 * sr:
         windows = split_audio_to_windows(wav)
-
         return windows
 
+
 def windows_to_mel_spec(windows, sr=16000):
+    """
+    Преобразует окна аудиоданных в мел-спектрограммы.
+
+    Аргументы:
+        windows (list): Список окон аудиоданных.
+        sr (int): Частота дискретизации аудиоданных. По умолчанию 16000.
+
+    Возвращает:
+        numpy.ndarray: Массив мел-спектрограмм.
+    """
     if len(windows) == 17:
         mel_spectrograms = []
 
@@ -46,14 +59,36 @@ def windows_to_mel_spec(windows, sr=16000):
 
         return np.array(mel_spectrograms)
 
+
 def get_mel_spectrograms(wav, sr=16000):
+    """
+    Генерирует мел-спектрограммы из аудиоданных.
+
+    Аргументы:
+        wav (numpy.ndarray): Аудиоданные.
+        sr (int): Частота дискретизации аудиоданных. По умолчанию 16000.
+
+    Возвращает:
+        numpy.ndarray: Массив мел-спектрограмм с изменёнными осями.
+    """
     windows = load_and_split_audio(wav, sr)
     mel_spectrograms = windows_to_mel_spec(windows)
     mel_spectrograms = np.transpose(mel_spectrograms, (0, 2, 3, 1))
 
     return mel_spectrograms
-    
+
+
 def get_vggish_output(wav, vggish):
+    """
+    Генерирует выходные данные модели VGGish на основе аудиоданных.
+
+    Аргументы:
+        wav (numpy.ndarray): Аудиоданные.
+        vggish (tensorflow.keras.Model): Модель VGGish.
+
+    Возвращает:
+        numpy.ndarray: Выходные данные модели VGGish.
+    """
     mel_spectrograms = get_mel_spectrograms(wav)
 
     vggish_output = vggish(mel_spectrograms)

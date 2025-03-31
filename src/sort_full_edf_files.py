@@ -27,9 +27,9 @@ def get_file_size(url):
     return file_size
 
 
-rml_folder = '/var/data/apnea/rml/'
-edf_folder = '/var/data/apnea/datasets/edf/'
-url_file = '/var/data/apnea/778740145531650048.txt'
+rml_folder = '/var/data/rml/'
+edf_folder = '/var/data/datasets/edf/'
+url_file = '/var/data/778740145531650048.txt'
 
 with open(url_file, "r") as f:
     url_lines = f.readlines()

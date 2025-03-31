@@ -5,6 +5,18 @@ from requests.exceptions import RequestException
 import time
 
 def download_file(url, save_path, max_retries=1, retry_delay=5):
+    """
+    Загружает файл по указанному URL и сохраняет его в заданный путь.
+
+    Аргументы:
+        url (str): URL файла для загрузки.
+        save_path (str): Локальный путь для сохранения файла.
+        max_retries (int): Максимальное количество попыток загрузки в случае ошибки. По умолчанию 1.
+        retry_delay (int): Задержка (в секундах) между попытками загрузки. По умолчанию 5.
+
+    Возвращает:
+        bool: True, если файл успешно загружен, иначе False.
+    """
     for attempt in range(max_retries):
         try:
             response = requests.get(url, stream=True)
@@ -33,7 +45,17 @@ def download_file(url, save_path, max_retries=1, retry_delay=5):
                 print("Max retries reached. Download failed.")
                 return False
 
+
 def get_file_size(url):
+    """
+    Получает размер файла по указанному URL.
+
+    Аргументы:
+        url (str): URL файла.
+
+    Возвращает:
+        int: Размер файла в байтах или 0, если размер не удалось определить.
+    """
     try:
         response = requests.head(url)
         response.raise_for_status()
@@ -41,9 +63,10 @@ def get_file_size(url):
     except RequestException:
         return 0
 
-rml_folder = '/var/data/apnea/rml/'
-edf_folder = '/var/data/apnea/datasets/edf/'
-url_file = '/var/data/apnea/778740145531650048.txt'
+
+rml_folder = '/var/data/rml/'
+edf_folder = '/var/data/datasets/edf/'
+url_file = '/var/data/778740145531650048.txt'
 
 os.makedirs(rml_folder, exist_ok=True)
 os.makedirs(edf_folder, exist_ok=True)

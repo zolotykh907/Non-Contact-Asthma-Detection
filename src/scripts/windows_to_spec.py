@@ -7,15 +7,27 @@ from tqdm import tqdm
 
 import sys
 sys.path.append(os.path.abspath("..")) 
-sys.path.append("/var/data/apnea/SafeVision-Apnea/vggish/")
+sys.path.append("/var/data/vggish/")
 
 import vggish_input, vggish_params, vggish_slim
 from vggish_slim import define_vggish_slim, load_vggish_slim_checkpoint
 
-checkpoint_path = "/var/data/apnea/src/vggish/vggish_model.ckpt"  
-pca_params_path = "/var/data/apnea/src/vggish/vggish_pca_params.npz"
+checkpoint_path = "/var/data/src/vggish/vggish_model.ckpt"  
+pca_params_path = "/var/data/src/vggish/vggish_pca_params.npz"
+
 
 def split_audio_to_windows(audio_path, window_size=1.0, step_size=0.25):
+    """
+    Разбивает аудиофайл на окна фиксированного размера с заданным шагом.
+
+    Аргументы:
+        audio_path (str): Путь к аудиофайлу.
+        window_size (float): Размер окна в секундах. По умолчанию 1.0.
+        step_size (float): Шаг между окнами в секундах. По умолчанию 0.25.
+
+    Возвращает:
+        tuple: Список окон аудиоданных и частота дискретизации.
+    """
     wav_data, sample_rate = librosa.load(audio_path, sr=None)
 
     if len(wav_data.shape) > 1:
@@ -34,7 +46,17 @@ def split_audio_to_windows(audio_path, window_size=1.0, step_size=0.25):
     
     return windows, sample_rate
 
+
 def windows_to_spectrograms(files, out_dir, window_size=1.0, step_size=0.25):
+    """
+    Преобразует окна аудиоданных в спектрограммы и сохраняет их в файлы.
+
+    Аргументы:
+        files (list): Список путей к аудиофайлам.
+        out_dir (str): Директория для сохранения спектрограмм.
+        window_size (float): Размер окна в секундах. По умолчанию 1.0.
+        step_size (float): Шаг между окнами в секундах. По умолчанию 0.25.
+    """
     with tf.Graph().as_default():
         sess = tf.compat.v1.Session()
         vggish_slim.define_vggish_slim(training=False)
@@ -43,8 +65,7 @@ def windows_to_spectrograms(files, out_dir, window_size=1.0, step_size=0.25):
         features_tensor = sess.graph.get_tensor_by_name("vggish/input_features:0")
         pool4_output = sess.graph.get_tensor_by_name("vggish/pool4/MaxPool:0")
 
-        for file in tqdm(files):
-            #audio_path = NO_APNEA_DIR + file
+        for file in tqdm(files, desc="Обработка файлов"):
             output_file = os.path.join(out_dir, f"0/{file}_combined.npy")
 
             if os.path.exists(output_file):
@@ -56,8 +77,10 @@ def windows_to_spectrograms(files, out_dir, window_size=1.0, step_size=0.25):
             for i, window in enumerate(windows):
                 mel_spec = vggish_input.waveform_to_examples(window, sr)
 
-                [pool4_output_val] = sess.run([pool4_output],
-                                            feed_dict={features_tensor: mel_spec})
+                [pool4_output_val] = sess.run(
+                    [pool4_output],
+                    feed_dict={features_tensor: mel_spec}
+                )
                 pool4_output_val = np.reshape(pool4_output_val, [-1, 6 * 4 * 512])
 
                 spectograms.append(pool4_output_val)

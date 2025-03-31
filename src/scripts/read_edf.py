@@ -7,7 +7,7 @@ from typing import Tuple
 warnings.filterwarnings("ignore")
 
 
-def get_channel(filepath: str, channel_id: str = 'Mic') -> Tuple[np.ndarray, mne.Info]: #PulseRate
+def get_channel(filepath: str, channel_id: str = 'Mic') -> Tuple[np.ndarray, mne.Info]:
     """
     Извлекает данные указанного канала из EDF-файла.
 
@@ -43,17 +43,29 @@ def get_channel(filepath: str, channel_id: str = 'Mic') -> Tuple[np.ndarray, mne
     
     return selected_data, data.info
 
-import pyedflib
 
-def pyedflib_get_channels(file_path, channel_id=17): #17 - PulseRate
+def pyedflib_get_channels(file_path: str, channel_id: int = 17) -> np.ndarray:
+    """
+    Извлекает данные указанного канала из EDF-файла с использованием библиотеки pyedflib.
+
+    Параметры:
+    -----------
+    file_path : str
+        Путь к файлу в формате EDF.
+    channel_id : int, optional
+        Индекс канала, данные которого нужно извлечь. По умолчанию 17.
+
+    Возвращает:
+    -----------
+    signal_data : numpy.ndarray
+        Данные выбранного канала.
+    """
     f = pyedflib.EdfReader(file_path)
 
-    #n = f.signals_in_file  # Количество сигналов (каналов)
-    #signal_labels = f.getSignalLabels()  # Названия каналов
-    #sfreqs = [f.getSampleFrequency(i) for i in range(n)]  # Частоты дискретизации
-
+    # Чтение данных указанного канала
     signal_data = f.readSignal(channel_id)
 
+    # Закрытие файла
     f.close()
 
     return signal_data

@@ -1,19 +1,16 @@
 import os
 import librosa
 
+
 def get_all_files(directory):
     """
-    Извлекает пути для всех файлов в каталоге, включая файлы из подкаталогов.
+    Рекурсивно получает список всех файлов в указанной директории.
 
-    Параметры:
-    -----------
-    directory : str
-        Путь к каталогу.
+    Аргументы:
+        directory (str): Путь к директории.
 
     Возвращает:
-    -----------
-    all_files: list
-        Список путей к файлам.
+        list: Список путей ко всем файлам в директории.
     """
     all_files = []
     for root, dirs, files in os.walk(directory):
@@ -25,23 +22,16 @@ def get_all_files(directory):
 
 def split_audio_to_windows(wav_data, window_size=1.0, step_size=0.25, sr=16000):
     """
-    Разбивает массив из WAV файла на окна определенной длины с определенным шагом
+    Разбивает аудиоданные на окна фиксированного размера с заданным шагом.
 
-    Параметры:
-    ----------
-    wav_data : numpy.ndarray
-        Массив нумпай из WAV файла.
-    window_size : float
-        размер окна.
-    step_size : float
-        размер шага.
-    sr : int
-        частота дискретизации WAV файла
+    Аргументы:
+        wav_data (numpy.ndarray): Аудиоданные.
+        window_size (float): Размер окна в секундах. По умолчанию 1.0.
+        step_size (float): Шаг между окнами в секундах. По умолчанию 0.25.
+        sr (int): Частота дискретизации аудиоданных. По умолчанию 16000.
 
     Возвращает:
-    -----------
-    windows: list
-        Список окон.
+        list: Список окон аудиоданных.
     """
     window_samples = int(window_size * sr)
     step_samples = int(step_size * sr)
@@ -53,20 +43,20 @@ def split_audio_to_windows(wav_data, window_size=1.0, step_size=0.25, sr=16000):
         end = start + window_samples
         window = wav_data[start:end]
         windows.append(window)
-    
+
     return windows
 
 
 def resample_audio(audio_data, orig_sr=48000, target_sr=16000):
     """
-    Пересэмплирует аудиоданные до заданной частоты.
+    Пересэмплирует аудиоданные до целевой частоты дискретизации.
 
     Аргументы:
-    audio_data - массив сэмплов
-    orig_sr    - исходная частота дискретизации
-    target_sr  - целевая частота дискретизации
+        audio_data (numpy.ndarray): Аудиоданные.
+        orig_sr (int): Исходная частота дискретизации. По умолчанию 48000.
+        target_sr (int): Целевая частота дискретизации. По умолчанию 16000.
 
     Возвращает:
-    - Пересэмплированные данные
+        numpy.ndarray: Пересэмплированные аудиоданные.
     """
     return librosa.resample(audio_data, orig_sr=orig_sr, target_sr=target_sr)
