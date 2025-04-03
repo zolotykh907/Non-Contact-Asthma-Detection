@@ -7,6 +7,45 @@
     android:background="@color/purple_200"
     android:padding="16dp">
 
+    <!-- Гайдлайны для процентного расположения -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" /> <!-- 10% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" /> <!-- 30% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" /> <!-- 40% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" /> <!-- 80% от верха (20% от низа) -->
+
+    <!-- Фоновая анимация кругов -->
+    <com.example.asthma.WaveBackgroundView
+        android:id="@+id/waveBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Заголовок: количество приступов -->
     <TextView
         android:id="@+id/asthmaAttackCount"
@@ -15,30 +54,27 @@
         android:text="0"
         android:textSize="48sp"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Заголовок статистики -->
     <TextView
         android:id="@+id/statisticsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:text="Статистика предсказаний"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_30"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/asthmaAttackCount" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Таблица с данными -->
     <TableLayout
         android:id="@+id/statisticsTable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/statisticsTitle"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_40"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -61,7 +97,6 @@
                 android:layout_gravity="end" />
         </TableRow>
 
-        <!-- Пример строки данных -->
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
@@ -79,28 +114,24 @@
     </TableLayout>
 
     <!-- Кнопки -->
-
     <Button
         android:id="@+id/exportButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="64dp"
         android:background="@drawable/oval_button"
         android:text="Выгрузить"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/resetButton"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
 
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
         android:background="@drawable/oval_button"
         android:text="Сбросить"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.718"
-        app:layout_constraintStart_toEndOf="@id/exportButton" />
-
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom_20"
+        app:layout_constraintStart_toEndOf="@id/exportButton"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

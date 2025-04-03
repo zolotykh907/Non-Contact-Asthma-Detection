@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_200"
     android:padding="16dp">
 
-    <!-- Имя пользователя -->
+    <!-- Гайдлайны для процентного расположения -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" /> <!-- 10% от верха -->
 
-    <!-- Кнопка редактирования (иконка карандаша) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" /> <!-- 30% от верха -->
 
-    <!-- Информация о пользователе -->
-
+    <!-- Имя пользователя (по центру горизонтально, ближе к верху) -->
     <TextView
         android:id="@+id/userNameTextView"
-        android:layout_width="229dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="Имя пользователя"
         android:textSize="30sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@+id/editButton"
-        app:layout_constraintHorizontal_bias="0.937"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:padding="8dp"
+    app:layout_constraintWidth_percent="0.6"
+    app:layout_constraintTop_toTopOf="@id/guideline_top_10"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Кнопка редактирования (иконка карандаша) -->
     <ImageButton
         android:id="@+id/editButton"
         android:layout_width="62dp"
         android:layout_height="56dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/oval_button"
         android:contentDescription="Редактировать профиль"
         android:scaleType="centerInside"
         android:src="@drawable/edit"
+        app:layout_constraintTop_toTopOf="@id/userNameTextView"
         app:layout_constraintBottom_toBottomOf="@id/userNameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/userNameTextView"
-        app:layout_constraintVertical_bias="0.366" />
+        app:layout_constraintStart_toEndOf="@id/userNameTextView"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Информация о пользователе -->
     <TextView
         android:id="@+id/userInfoTextView"
-        android:layout_width="336dp"
-        android:layout_height="174dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Пол: Мужской\nВес: 70 кг\nРост: 175 см"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/editButton"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameTextView" />
+        android:textSize="20sp"
+        app:layout_constraintWidth_percent="0.8"
+    app:layout_constraintTop_toTopOf="@id/guideline_top_30"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

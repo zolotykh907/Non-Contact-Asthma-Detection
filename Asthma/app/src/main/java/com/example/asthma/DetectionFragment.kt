@@ -6,7 +6,6 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +31,8 @@ class DetectionFragment : Fragment() {
     private lateinit var statusTextView: TextView
     private lateinit var nightRecordingButton: Button
     private lateinit var listeningButton: Button
+    private lateinit var waveBackground: WaveBackgroundView
+    private var fftBuffer = FloatArray(BUFFER_SIZE / 2)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +44,10 @@ class DetectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Инициализируем элементы интерфейса
         statusTextView = view.findViewById(R.id.statusTextView)
         nightRecordingButton = view.findViewById(R.id.nightRecordingButton)
         listeningButton = view.findViewById(R.id.listeningButton)
+        waveBackground = view.findViewById(R.id.waveBackground)
 
         nightRecordingButton.setOnClickListener {
             if (isRecording) {
@@ -94,12 +95,10 @@ class DetectionFragment : Fragment() {
         audioRecord?.startRecording()
         CoroutineScope(Dispatchers.IO).launch {
             val audioBuffer = ShortArray(BUFFER_SIZE / 2)
-            val directory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val directory = requireActivity().getExternalFilesDir(android.os.Environment.DIRECTORY_DOCUMENTS)
             if (directory == null) {
                 Log.e("AudioNN", "Cannot access storage directory")
-                activity?.runOnUiThread {
-                    statusTextView.text = "Ошибка: Нет доступа к хранилищу"
-                }
+                activity?.runOnUiThread { statusTextView.text = "Ошибка: Нет доступа к хранилищу" }
                 return@launch
             }
 
@@ -111,7 +110,8 @@ class DetectionFragment : Fragment() {
                     if (read > 0) {
                         val data = audioBuffer.joinToString(",")
                         outputStream.write("Raw audio data: $data\n".toByteArray())
-                        Log.d("AudioNN", "Recording audio data")
+                        Log.d("AudioNN", "Read $read samples: ${audioBuffer.take(10).joinToString()}")
+                        updateVisualizer(audioBuffer)
                     }
                 }
                 audioRecord?.stop()
@@ -120,15 +120,30 @@ class DetectionFragment : Fragment() {
                 outputStream.close()
             } catch (e: Exception) {
                 Log.e("AudioNN", "Error writing to file: ${e.message}")
-                activity?.runOnUiThread {
-                    statusTextView.text = "Ошибка: ${e.message}"
-                }
+                activity?.runOnUiThread { statusTextView.text = "Ошибка: ${e.message}" }
             }
         }
     }
 
     private fun stopRecording() {
         isRecording = false
+    }
+
+    private fun updateVisualizer(audioBuffer: ShortArray) {
+        for (i in fftBuffer.indices) {
+            fftBuffer[i] = audioBuffer[i].toFloat() / Short.MAX_VALUE
+        }
+        val magnitudes = calculateMagnitude(fftBuffer)
+        val averageAmplitude = magnitudes.average().toFloat() * 5000f
+        waveBackground.updateAmplitude(averageAmplitude)
+    }
+
+    private fun calculateMagnitude(buffer: FloatArray): FloatArray {
+        val result = FloatArray(buffer.size / 2)
+        for (i in result.indices) {
+            result[i] = kotlin.math.abs(buffer[i])
+        }
+        return result
     }
 
     override fun onDestroyView() {
