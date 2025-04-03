@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_200"
+    android:padding="16dp">
+
+    <!-- Имя пользователя -->
+
+    <!-- Кнопка редактирования (иконка карандаша) -->
+
+    <!-- Информация о пользователе -->
+
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="229dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="44dp"
+        android:text="Имя пользователя"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/editButton"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="62dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/oval_button"
+        android:contentDescription="Редактировать профиль"
+        android:scaleType="centerInside"
+        android:src="@drawable/edit"
+        app:layout_constraintBottom_toBottomOf="@id/userNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/userNameTextView"
+        app:layout_constraintVertical_bias="0.366" />
+
+    <TextView
+        android:id="@+id/userInfoTextView"
+        android:layout_width="336dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="68dp"
+        android:text="Пол: Мужской\nВес: 70 кг\nРост: 175 см"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userNameTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

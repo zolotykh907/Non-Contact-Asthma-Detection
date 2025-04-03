@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_account"
+        android:title="Аккаунт"
+        android:icon="@drawable/account" />
+    <item
+        android:id="@+id/nav_detection"
+        android:title="Детекция"
+        android:icon="@drawable/predict" />
+    <item
+        android:id="@+id/nav_stats"
+        android:title="Статистика"
+        android:icon="@drawable/stat" />
+</menu>
