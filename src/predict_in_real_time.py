@@ -64,7 +64,6 @@ def predict_audio():
                 
                 print(f"Predicted class: {class_id} (confidence: {confidence:.2f})")
                 
-                # Небольшая задержка для стабильности
                 time.sleep(0.1)
                 
             except KeyboardInterrupt:
