@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_200"
+    android:padding="16dp">
+
+    <!-- Гайдлайны для процентного расположения -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" /> <!-- 10% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" /> <!-- 30% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" /> <!-- 40% от верха -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" /> <!-- 80% от верха (20% от низа) -->
+
+    <!-- Фоновая анимация кругов -->
+
+
+    <com.example.asthma.WaveBackgroundView
+        android:id="@+id/waveBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/asthmaAttackCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="48sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Заголовок статистики -->
+    <TextView
+        android:id="@+id/statisticsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Статистика предсказаний"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_30"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Таблица с данными -->
+    <TableLayout
+        android:id="@+id/statisticsTable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Предсказание"
+                android:paddingEnd="16dp"
+                android:layout_gravity="start" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Длительность"
+                android:layout_gravity="end" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Время и дата"
+                android:layout_gravity="end" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Нейронный предсказатель" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 мин" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.04.2025 10:30" />
+        </TableRow>
+    </TableLayout>
+
+
+    <com.example.asthma.AmplitudeChartView
+        android:id="@+id/amplitudeChartView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/statisticsTable"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/exportButton"
+        app:layout_constraintTop_toBottomOf="@+id/statisticsTable"
+        tools:layout_editor_absoluteY="347dp" />
+
+    <Button
+        android:id="@+id/exportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_button"
+        android:text="Выгрузить"
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/resetButton"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_button"
+        android:text="Сбросить"
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom_20"
+        app:layout_constraintStart_toEndOf="@id/exportButton"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
